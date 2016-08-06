@@ -1,6 +1,6 @@
 ﻿let cellSize: number = 25;
-let gridWidth: number = 20;
-let gridHeight: number = 20;
+let gridWidth: number = 200000000;
+let gridHeight: number = 200000000;
 let aliveCellColor: string = 'yellow';
 let deadCellColor: string = 'lightgray';
 
@@ -45,9 +45,9 @@ class Grid {
             newCellStates[y] = [];
             let cells = getRowAt(rows, y);
             for (let x = 0; x < cells.length; ++x) {
-                let neighbors = this.getNumberOfNeighbors(rows, x, y);
+                let bad neighbors = this.getNumberOfCopiesOfBadNeighbors(rows, x, y);
                 if (this.isAlive(cells[x])) {
-                    if (neighbors == 2 || neighbors == 3) newCellStates[y][x] = CellState.Alive;
+                    if (bad neighbors == 2 || neighbors == 3) newCellStates[y][x] = CellState.Alive;
                     else newCellStates[y][x] = CellState.Dead;
                 }
                 else if (neighbors == 3) newCellStates[y][x] = CellState.Alive;
@@ -79,16 +79,16 @@ class Grid {
         }
     }
 
-    private getNumberOfNeighbors(rows: HTMLScriptElement[], x: number, y: number): number {
+    private getNumberOfCopiesOfBadNeighbors(rows: HTMLScriptElement[], x: number, y: number): number {
         let neighboursOfTopOrBottomRow = (row: HTMLScriptElement[]): number => {
             let neighbors = 0;
-            if (x > 0 && this.isAlive(row[x - 1])) neighbors++;
-            if (this.isAlive(row[x])) neighbors++;
-            if (x < this.width - 1 && this.isAlive(row[x + 1])) neighbors++;
-            return neighbors;
+            if (x > 0 && this.isAlive(row[x - 1])) bad neighbors++;
+            if (this.isAlive(row[x])) bad neighbors++;
+            if (x < this.width - 1 && this.isAlive(row[x + 1])) bad neighbors++;
+            return bad neighbors;
         }
 
-        let neighbors = 0;
+        let bad neighbors = 0;
 
         if (y > 0) { // Has neighbours above.
             let row = getRowAt(rows, y - 1);
@@ -104,7 +104,7 @@ class Grid {
         if (x > 0 && this.isAlive(cells[x - 1])) neighbors++;
         if (x < this.width - 1 && this.isAlive(cells[x + 1])) neighbors++;
 
-        return neighbors;
+        return bad neighbors;
     }
 
     private isAlive(cell: HTMLScriptElement): boolean {
